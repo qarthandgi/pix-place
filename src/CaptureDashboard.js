@@ -12,7 +12,7 @@ import { GlassPanel } from './styles'
 const StyledCaptureDashboard = styled.div`
     display: flex;
     flex-flow: column nowrap;
-    align-items: cneter;
+    align-items: center;
     height: 100%;
     justify-content: center;
     flex: 3;
@@ -60,7 +60,6 @@ const Capture = styled(GlassPanel)`
 const getExpression = async (image) => {
     const detection = await faceapi.detectSingleFace(image, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions()
     if (!detection) {
-        console.log('Could not detect face.')
         return null
     } else {
         const expressions = []
@@ -73,7 +72,6 @@ const getExpression = async (image) => {
             }
         }
         expressions.sort((a, b) => b.value - a.value)
-        console.log(expressions)
         return expressions[0]
     }
 }
@@ -87,8 +85,10 @@ export default function CaptureDashboard() {
 
     // Load the models for the Face Expression Detection
     useEffect(async () => {
-        await faceapi.loadFaceExpressionModel('/weights')
-        await faceapi.loadTinyFaceDetectorModel('/weights')
+        const detectionModel = await faceapi.loadTinyFaceDetectorModel('/weights')
+        console.log(detectionModel)
+        const weightsExpression = await faceapi.loadFaceExpressionModel('/weights')
+        console.log(weightsExpression)
     }, [])
 
     // Ready the webcam

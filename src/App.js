@@ -11,11 +11,7 @@ import { ToastProvider } from 'react-toast-notifications'
 
 import { useAuthState } from 'react-firebase-hooks/auth'
 
-console.log("****")
-console.log(firebase)
 if (!firebase.apps.length) {
-  console.log('WOAH')
-  console.log(firebase)
   firebase.initializeApp({
     apiKey: "AIzaSyD8J1dIzHEI0oVK6xIYWzibFT0aVyC0k7g",
     authDomain: "pix-place.firebaseapp.com",
