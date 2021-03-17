@@ -22,15 +22,12 @@ const StyledHistoryPanel = styled(GlassPanel)`
     }
 `
 
+export default function PostsHistory() {
 
-export default function PostsHistory(props) {
-    // Get firestore instance and prepare the posts data
+    // Get firestore instance, prepare the firestore query, and initiate data
     const firestore = firebase.firestore()
     const postsRef = firestore.collection('posts')
     const postsRefQuery = postsRef.orderBy('createdAt').limit(25)
-
-    
-    
     const [posts] = useCollectionData(postsRefQuery, {idField: 'id'})
     
     /* Ensure the chat always stays scrolled to the bottom */

@@ -44,6 +44,15 @@ const StyledPost = styled.div`
     }
 `
 
+const emotionMap = {
+    'happy':        '😀 Happy',
+    'angry':        '😡 Angry',
+    'neutral':      '🥱 Neutral',
+    'surprised':    '😮 Surprised',
+    'sad':          '😞 Sad',
+    'fearful':      '🙀 Fearful',
+    'Disgusted':    '🤮 Disgusted'
+}
 export default function Post({ post }) {
     
     
@@ -58,7 +67,7 @@ export default function Post({ post }) {
                     <div className="user-pic" style={{backgroundImage: `url(${post.profileImageUrl})`}}></div>
                     <div className="name">{post.profileName}</div>
                 </div>
-                <div className="emotion">😀 Happy</div>
+                <div className="emotion">{post.expression ? emotionMap[post.expression] : '🤷'}</div>
             </div>
         </StyledPost>
     )
