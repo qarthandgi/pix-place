@@ -4,6 +4,7 @@ import * as faceapi from 'face-api.js'
 import { useState, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import Webcam from 'webcam-easy'
+import { useToasts } from 'react-toast-notifications'
 
 import { auth } from './App'
 import { GlassPanel } from './styles'
@@ -55,6 +56,7 @@ const Capture = styled(GlassPanel)`
     }
 `
 
+// Ideally should turn this into a hook: `useExpression...`
 const getExpression = async (image) => {
     const detection = await faceapi.detectSingleFace(image, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions()
     if (!detection) {
@@ -76,7 +78,9 @@ const getExpression = async (image) => {
     }
 }
 
-export default function CaptureDashboard(props) {
+export default function CaptureDashboard() {
+    const { addToast } = useToasts()
+    
     // Reference to firestore & storage items we'll need
     const postsReference = firebase.firestore().collection('posts')
     const uploadsBucketReference = firebase.storage().ref()
@@ -103,10 +107,17 @@ export default function CaptureDashboard(props) {
     }, [])
 
     const snapshot = async () => {
+        addToast('Detecting expression & posting photo.', { appearance: 'info', autoDismiss: true })
         const picture = webcam.snap()
         const image = new Image()
         image.src = picture
         const expression = await getExpression(image)
+
+        if (!expression) {
+            addToast('Expression not detected, uploading anyway.', { appearance: 'warning', autoDismiss: true })
+        } else {
+            addToast(`I see that you're feeling ${expression.emotion}. Alright, uploading!`, { appearance: 'success', autoDismiss: true })
+        }
 
         const uploadPath = `uploads/${uuidv4()}.png`
         const imageRef = uploadsBucketReference.child(uploadPath)

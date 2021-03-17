@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import PostsHistory from './PostsHistory'
 import CaptureDashboard from './CaptureDashboard'
+import SignOut from './SignOut'
 
 const DashboardPane = styled.div`
     display: flex;
@@ -14,9 +15,20 @@ const DashboardPane = styled.div`
     }
 `
 
+const StyledSignOut = styled(SignOut)`
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background-color: transparent;
+    outline: none;
+    border-radius: 10px;
+    cursor: pointer;
+`
+
 export default function Dashboard() {
     return (
         <DashboardPane>
+            <StyledSignOut />
             <CaptureDashboard />
             <PostsHistory />
         </DashboardPane>

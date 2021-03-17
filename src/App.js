@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import styled, { keyframes } from 'styled-components'
 import Dashboard from './Dashboard'
@@ -8,9 +7,9 @@ import SignOut from './SignOut'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import { ToastProvider } from 'react-toast-notifications'
 
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 console.log("****")
 console.log(firebase)
@@ -59,10 +58,12 @@ function App() {
   const [user] = useAuthState(auth)
 
   return (
-    <FullScreen>
-      {/* <SignOut /> */}
-      {user ? <Dashboard /> : <SignIn />}
-    </FullScreen>
+    <ToastProvider>
+      <FullScreen>
+        {/* <SignOut /> */}
+        {user ? <Dashboard /> : <SignIn />}
+      </FullScreen>
+    </ToastProvider>
   );
 }
 

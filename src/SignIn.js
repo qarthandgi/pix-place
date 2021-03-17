@@ -13,7 +13,7 @@ const CenteredPanel = styled(GlassPanel)`
   align-items: center;
   .title {
     margin-bottom: 30px;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     font-family: sans-serif;
   }
@@ -31,6 +31,7 @@ export default function SignIn() {
   
   return (
     <CenteredPanel>
+      <h3>Niles & See6 Present Pix Place</h3>
       <div className="title">Sign In to the Pix Place</div>
       <img
         onClick={signInWithGoogle}
