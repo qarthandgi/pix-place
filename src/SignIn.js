@@ -11,10 +11,17 @@ const CenteredPanel = styled(GlassPanel)`
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  padding: 20px;
+  font-weight: 100;
+  font-family: sans-serif;
+  h3 {
+    font-weight: 100;
+  }
   .title {
     margin-bottom: 30px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 200;
     font-family: sans-serif;
   }
   img {
@@ -31,7 +38,7 @@ export default function SignIn() {
   
   return (
     <CenteredPanel>
-      <h3>Niles & See6 Present Pix Place</h3>
+      <h3>Niles & Shrine Present Picture Ping Pong Results</h3>
       <div className="title">Sign In to the Pix Place</div>
       <img
         onClick={signInWithGoogle}

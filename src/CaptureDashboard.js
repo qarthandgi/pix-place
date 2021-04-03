@@ -33,6 +33,10 @@ const Capture = styled(GlassPanel)`
     margin-top: 50px;
     position: relative;
     border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
     &:after {
         content: "";
         position: absolute;
@@ -43,6 +47,7 @@ const Capture = styled(GlassPanel)`
         transition: all 20ms linear;
         background-color: red;
         border-radius: 50%;
+        z-index: -1;
 
     }
     &:hover {
@@ -86,9 +91,7 @@ export default function CaptureDashboard() {
     // Load the models for the Face Expression Detection
     useEffect(async () => {
         const detectionModel = await faceapi.loadTinyFaceDetectorModel('/weights')
-        console.log(detectionModel)
         const weightsExpression = await faceapi.loadFaceExpressionModel('/weights')
-        console.log(weightsExpression)
     }, [])
 
     // Ready the webcam
@@ -106,7 +109,7 @@ export default function CaptureDashboard() {
             })
     }, [])
 
-    const snapshot = async () => {
+    const snapshot = async (won) => {
         addToast('Detecting expression & posting photo.', { appearance: 'info', autoDismiss: true })
         const picture = webcam.snap()
         const image = new Image()
@@ -126,12 +129,30 @@ export default function CaptureDashboard() {
             const { uid, photoURL, displayName } = auth.currentUser;
             await postsReference.add({
                 uid,
+                won,
                 profileName: displayName,
                 profileImageUrl: photoURL,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 pictureUrl,
                 expression: expression && expression.emotion
             })
+            const allPostsResp = await postsReference.get()
+            const allPosts = []
+            allPostsResp.forEach((doc) => {
+                allPosts.push(doc.data())
+            })
+            const results = allPosts.reduce((acc, current) => {
+                const currentValue = acc[current.profileName] || 0
+                acc[current.profileName] = current.won ? currentValue + 1 : currentValue
+                return acc
+            }, {})
+            let currentWinner = {}
+            for (const [key, value] of Object.entries(results)) {
+                if (value > (currentWinner.value || 0)) {
+                    currentWinner = {name: key, score: value}
+                }
+            }
+            addToast(`Current highest scorer is ${currentWinner.name} with a score of ${currentWinner.score}`, {appearance: 'info', autoDismiss: true})
         })
     }
 
@@ -142,7 +163,8 @@ export default function CaptureDashboard() {
                 <canvas id="canvas" style={{display: 'none'}}></canvas>
                 <audio src="audio/snap.wav" id="snapSound" preload="auto"></audio>
             </ViewerPane>
-            <Capture className="hello" onClick={snapshot} />
+            <Capture onClick={() => snapshot(true)}>I WON!</Capture>
+            <Capture onClick={() => snapshot(false)}>I LOST!</Capture>
         </StyledCaptureDashboard>
     )
 }

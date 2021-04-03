@@ -37,6 +37,13 @@ const StyledPost = styled.div`
                 margin-right: 5px;
                 background-size: cover;
             }
+            .status {
+                font-weight: 700;
+                font-size: 13px;
+                position: relative;
+                top: -1px;
+                color: gold;
+            }
         }
     }
     img {
@@ -65,7 +72,8 @@ export default function Post({ post }) {
             <div className="info">
                 <div className="user">
                     <div className="user-pic" style={{backgroundImage: `url(${post.profileImageUrl})`}}></div>
-                    <div className="name">{post.profileName}</div>
+                    <div className="name">{post.profileName} <span className='status'>{post.won ? 'WON' : 'LOST'}</span></div>
+
                 </div>
                 <div className="emotion">{post.expression ? emotionMap[post.expression] : '🤷'}</div>
             </div>
