@@ -136,23 +136,6 @@ export default function CaptureDashboard() {
                 pictureUrl,
                 expression: expression && expression.emotion
             })
-            const allPostsResp = await postsReference.get()
-            const allPosts = []
-            allPostsResp.forEach((doc) => {
-                allPosts.push(doc.data())
-            })
-            const results = allPosts.reduce((acc, current) => {
-                const currentValue = acc[current.profileName] || 0
-                acc[current.profileName] = current.won ? currentValue + 1 : currentValue
-                return acc
-            }, {})
-            let currentWinner = {}
-            for (const [key, value] of Object.entries(results)) {
-                if (value > (currentWinner.value || 0)) {
-                    currentWinner = {name: key, score: value}
-                }
-            }
-            addToast(`Current highest scorer is ${currentWinner.name} with a score of ${currentWinner.score}`, {appearance: 'info', autoDismiss: true})
         })
     }
 

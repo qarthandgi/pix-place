@@ -26,6 +26,8 @@ const StyledSignOut = styled(SignOut)`
 `
 
 export default function Dashboard() {
+
+    // const leader
     return (
         <DashboardPane>
             <StyledSignOut />
